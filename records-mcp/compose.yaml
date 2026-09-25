@@ -1,0 +1,51 @@
+services:
+  records-mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    tmpfs:
+      - /tmp
+    user: "records"
+    ports:
+      - "127.0.0.1:8001:8001"
+    environment:
+      PATIENT_DATA_DIR: /data/patients
+      MCP_VERIFICATION_KEY: /run/secrets/mcp-verification-key.pem
+      MCP_TOKEN_ISSUER: clinician-agent-api
+      MCP_TOKEN_AUDIENCE: clinician-records-mcp
+      MCP_ALLOWED_ORIGINS: http://127.0.0.1:8000
+      OTEL_SERVICE_NAME: clinician-records-mcp
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4318
+      APP_ENV: local
+      MCP_HOST: 0.0.0.0
+      MCP_PORT: 8001
+    volumes:
+      - ./data/patients:/data/patients:ro
+      - ./secrets/mcp-verification-key.pem:/run/secrets/mcp-verification-key.pem:ro
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 256M
+    restart: unless-stopped
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.128.0
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    tmpfs:
+      - /tmp
+    ports:
+      - "127.0.0.1:4318:4318"
+    volumes:
+      - ./observability/otel-collector.yaml:/etc/otelcol/config.yaml:ro
+    command: ["--config=/etc/otelcol/config.yaml"]
+    restart: unless-stopped

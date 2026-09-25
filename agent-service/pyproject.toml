@@ -1,0 +1,39 @@
+[project]
+name = "clinician-agent-service"
+version = "0.1.0"
+description = "Standalone clinician assistant HTTP API and MCP client"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "aiosqlite==0.22.1",
+    "openai==1.109.1",
+    "fastapi==0.141.1",
+    "mcp==2.2.0",
+    "opentelemetry-api==1.45.0",
+    "opentelemetry-exporter-otlp==1.45.0",
+    "opentelemetry-sdk==1.45.0",
+    "pydantic==2.13.5",
+    "pyjwt[crypto]==2.15.0",
+    "uvicorn[standard]==0.54.0",
+]
+
+[dependency-groups]
+dev = [
+    "httpx==0.28.1",
+    "pytest==8.4.2",
+    "pytest-asyncio==1.2.0",
+]
+
+[build-system]
+requires = ["hatchling==1.28.0"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/clinician_agent"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["tests"]
+asyncio_mode = "auto"
+markers = [
+    "integration: live records MCP subprocess integration tests",
+]

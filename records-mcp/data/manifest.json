@@ -1,0 +1,7 @@
+{
+  "dataset_version": "synthetic-v1",
+  "synthetic_only": true,
+  "patient_count": 21,
+  "as_of": "2026-09-24",
+  "source": "Hand-designed fictional engineering fixtures; not sampled from real patients."
+}

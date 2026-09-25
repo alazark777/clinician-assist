@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+*.tsbuildinfo
+.venv/
+node_modules/
+var/
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+secrets/
+.DS_Store
+dist/
+playwright-report/
+test-results/

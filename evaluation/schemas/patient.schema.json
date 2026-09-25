@@ -1,0 +1,129 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "dataset_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "patient_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "record_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "record_type": {
+            "enum": [
+              "condition",
+              "medication",
+              "allergy",
+              "lab",
+              "vital",
+              "visit_note"
+            ]
+          },
+          "recorded_at": {
+            "type": "string",
+            "format": "date"
+          },
+          "event_date": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "content": {
+            "type": "object",
+            "properties": {
+              "facts": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "section": {
+                      "enum": [
+                        "condition",
+                        "medication",
+                        "allergy",
+                        "lab",
+                        "vital"
+                      ]
+                    },
+                    "key": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "value": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "date": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "format": "date"
+                    },
+                    "qualifier": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "section",
+                    "key",
+                    "value",
+                    "date",
+                    "qualifier"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "facts",
+              "text"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "record_id",
+          "record_type",
+          "recorded_at",
+          "event_date",
+          "version",
+          "content"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "dataset_version",
+    "patient_id",
+    "records"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

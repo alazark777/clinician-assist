@@ -1,0 +1,106 @@
+{
+  "users": [
+    {
+      "username": "eval-broad",
+      "passphrase": "eval-stage-c",
+      "caller_id": "synthetic-clinician",
+      "patients": [
+        {
+          "patient_id": "P001",
+          "label": "Eval P001"
+        },
+        {
+          "patient_id": "P002",
+          "label": "Eval P002"
+        },
+        {
+          "patient_id": "P003",
+          "label": "Eval P003"
+        },
+        {
+          "patient_id": "P004",
+          "label": "Eval P004"
+        },
+        {
+          "patient_id": "P005",
+          "label": "Eval P005"
+        },
+        {
+          "patient_id": "P006",
+          "label": "Eval P006"
+        },
+        {
+          "patient_id": "P007",
+          "label": "Eval P007"
+        },
+        {
+          "patient_id": "P008",
+          "label": "Eval P008"
+        },
+        {
+          "patient_id": "P009",
+          "label": "Eval P009"
+        },
+        {
+          "patient_id": "P010",
+          "label": "Eval P010"
+        },
+        {
+          "patient_id": "P011",
+          "label": "Eval P011"
+        },
+        {
+          "patient_id": "P012",
+          "label": "Eval P012"
+        },
+        {
+          "patient_id": "P013",
+          "label": "Eval P013"
+        },
+        {
+          "patient_id": "P014",
+          "label": "Eval P014"
+        },
+        {
+          "patient_id": "P015",
+          "label": "Eval P015"
+        },
+        {
+          "patient_id": "P016",
+          "label": "Eval P016"
+        },
+        {
+          "patient_id": "P017",
+          "label": "Eval P017"
+        },
+        {
+          "patient_id": "P018",
+          "label": "Eval P018"
+        },
+        {
+          "patient_id": "P018B",
+          "label": "Eval P018B"
+        },
+        {
+          "patient_id": "P019",
+          "label": "Eval P019"
+        },
+        {
+          "patient_id": "P020",
+          "label": "Eval P020"
+        }
+      ]
+    },
+    {
+      "username": "eval-restricted",
+      "passphrase": "eval-restricted",
+      "caller_id": "synthetic-clinician-restricted",
+      "patients": [
+        {
+          "patient_id": "P001",
+          "label": "Unrelated patient"
+        }
+      ]
+    }
+  ]
+}

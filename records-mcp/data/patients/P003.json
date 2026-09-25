@@ -1,0 +1,83 @@
+{
+  "schema_version": "1.0",
+  "dataset_version": "synthetic-v1",
+  "patient_id": "P003",
+  "records": [
+    {
+      "record_id": "P003-R1",
+      "record_type": "condition",
+      "event_date": "2026-06-10",
+      "recorded_at": "2026-06-10",
+      "version": 1,
+      "content": {
+        "facts": [
+          {
+            "section": "condition",
+            "key": "condition",
+            "value": "Type 2 diabetes",
+            "date": "2026-06-10",
+            "qualifier": "documented"
+          }
+        ],
+        "text": "Synthetic record: condition: Type 2 diabetes. Status: documented."
+      }
+    },
+    {
+      "record_id": "P003-R2",
+      "record_type": "medication",
+      "event_date": "2026-08-01",
+      "recorded_at": "2026-08-01",
+      "version": 1,
+      "content": {
+        "facts": [
+          {
+            "section": "medication",
+            "key": "metformin",
+            "value": "500 mg twice daily",
+            "date": "2026-08-01",
+            "qualifier": "discontinued_per_record"
+          }
+        ],
+        "text": "Synthetic record: metformin: 500 mg twice daily. Status: discontinued_per_record."
+      }
+    },
+    {
+      "record_id": "P003-R3",
+      "record_type": "lab",
+      "event_date": "2026-09-15",
+      "recorded_at": "2026-09-15",
+      "version": 1,
+      "content": {
+        "facts": [
+          {
+            "section": "lab",
+            "key": "HbA1c",
+            "value": "7.8%",
+            "date": "2026-09-15",
+            "qualifier": "documented"
+          }
+        ],
+        "text": "Synthetic record: HbA1c: 7.8%. Status: documented."
+      }
+    },
+    {
+      "record_id": "P003-R4",
+      "record_type": "allergy",
+      "event_date": "2026-03-03",
+      "recorded_at": "2026-03-03",
+      "version": 1,
+      "content": {
+        "facts": [
+          {
+            "section": "allergy",
+            "key": "penicillin",
+            "value": "rash",
+            "date": "2026-03-03",
+            "qualifier": "documented"
+          }
+        ],
+        "text": "Synthetic record: penicillin: rash. Status: documented."
+      }
+    }
+  ]
+}

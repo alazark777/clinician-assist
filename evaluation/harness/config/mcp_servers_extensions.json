@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0",
+  "servers": [
+    {
+      "id": "records",
+      "enabled": true,
+      "url": "http://127.0.0.1:8010/mcp",
+      "transport": "streamable_http",
+      "protocol_version": "2026-07-28",
+      "token_audience": "clinician-records-mcp",
+      "allowed_tools": ["list_records", "read_records"],
+      "approved_schema_file": "record_tools.json",
+      "timeout_seconds": 5,
+      "max_transient_read_retries": 1,
+      "max_result_bytes": 102400
+    },
+    {
+      "id": "eval_ping",
+      "enabled": true,
+      "url": "http://127.0.0.1:8012/mcp",
+      "transport": "streamable_http",
+      "protocol_version": "2026-07-28",
+      "token_audience": "clinician-eval-ping-mcp",
+      "allowed_tools": ["ping"],
+      "approved_schema_file": "record_tools.json",
+      "timeout_seconds": 5,
+      "max_transient_read_retries": 0,
+      "max_result_bytes": 102400
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+# Optional local trace collection for records-mcp. Loopback-published ports only.
+# From records-mcp/: docker compose -f observability/compose.yaml up -d
+# Attach the records MCP app container to network clinician-records-observability
+# and set OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318 .
+name: clinician-records-observability
+
+services:
+  otel-collector:
+    image: ${OTEL_COLLECTOR_IMAGE:-otel/opentelemetry-collector-contrib:0.120.0}
+    command: ["--config=/etc/otelcol/config.yaml"]
+    volumes:
+      - ./otel-collector.yaml:/etc/otelcol/config.yaml:ro
+    ports:
+      - "127.0.0.1:4328:4318"
+      - "127.0.0.1:4327:4317"
+    depends_on:
+      jaeger:
+        condition: service_started
+    networks:
+      - observability
+    restart: unless-stopped
+
+  jaeger:
+    image: ${JAEGER_IMAGE:-jaegertracing/all-in-one:1.64.0}
+    environment:
+      COLLECTOR_OTLP_ENABLED: "true"
+    ports:
+      - "127.0.0.1:16687:16686"
+    volumes:
+      - ../../var/telemetry/records-jaeger:/badger
+    networks:
+      - observability
+    restart: unless-stopped
+
+networks:
+  observability:
+    name: clinician-records-observability

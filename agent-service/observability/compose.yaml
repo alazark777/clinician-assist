@@ -1,0 +1,35 @@
+# Optional local trace collection for agent-service. Loopback-published ports only.
+# From agent-service/: docker compose -f observability/compose.yaml up -d
+name: clinician-agent-observability
+
+services:
+  otel-collector:
+    image: ${OTEL_COLLECTOR_IMAGE:-otel/opentelemetry-collector-contrib:0.120.0}
+    command: ["--config=/etc/otelcol/config.yaml"]
+    volumes:
+      - ./otel-collector.yaml:/etc/otelcol/config.yaml:ro
+    ports:
+      - "127.0.0.1:4318:4318"
+      - "127.0.0.1:4317:4317"
+    depends_on:
+      jaeger:
+        condition: service_started
+    networks:
+      - observability
+    restart: unless-stopped
+
+  jaeger:
+    image: ${JAEGER_IMAGE:-jaegertracing/all-in-one:1.64.0}
+    environment:
+      COLLECTOR_OTLP_ENABLED: "true"
+    ports:
+      - "127.0.0.1:16686:16686"
+    volumes:
+      - ../../var/telemetry/agent-jaeger:/badger
+    networks:
+      - observability
+    restart: unless-stopped
+
+networks:
+  observability:
+    name: clinician-agent-observability

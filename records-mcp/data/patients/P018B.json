@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "dataset_version": "synthetic-v1",
+  "patient_id": "P018B",
+  "records": [
+    {
+      "record_id": "P018-R1",
+      "record_type": "condition",
+      "event_date": "2026-09-10",
+      "recorded_at": "2026-09-10",
+      "version": 1,
+      "content": {
+        "facts": [
+          {
+            "section": "condition",
+            "key": "condition",
+            "value": "Asthma",
+            "date": "2026-09-10",
+            "qualifier": "documented"
+          }
+        ],
+        "text": "Synthetic record: condition: Asthma. Status: documented."
+      }
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0",
+  "dataset_version": "synthetic-v1",
+  "patient_id": "P015",
+  "records": [
+    {
+      "record_id": "P015-R2",
+      "record_type": "medication",
+      "event_date": "2026-06-10",
+      "recorded_at": "2026-06-10",
+      "version": 1,
+      "content": {
+        "facts": [
+          {
+            "section": "medication",
+            "key": "metformin",
+            "value": "500 mg twice daily",
+            "date": "2026-06-10",
+            "qualifier": "last_documented_current_use_unconfirmed"
+          }
+        ],
+        "text": "Synthetic record: metformin: 500 mg twice daily. Status: last_documented_current_use_unconfirmed."
+      }
+    },
+    {
+      "record_id": "P015-R3",
+      "record_type": "lab",
+      "event_date": "2026-09-12",
+      "recorded_at": "2026-09-12",
+      "version": 1,
+      "content": {
+        "facts": [
+          {
+            "section": "lab",
+            "key": "glucose",
+            "value": "105 mg/dL",
+            "date": "2026-09-12",
+            "qualifier": "documented"
+          }
+        ],
+        "text": "Synthetic record: glucose: 105 mg/dL. Status: documented."
+      }
+    }
+  ]
+}

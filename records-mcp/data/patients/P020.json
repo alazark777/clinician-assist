@@ -1,0 +1,83 @@
+{
+  "schema_version": "1.0",
+  "dataset_version": "synthetic-v1",
+  "patient_id": "P020",
+  "records": [
+    {
+      "record_id": "P020-R1",
+      "record_type": "condition",
+      "event_date": "2026-06-10",
+      "recorded_at": "2026-06-10",
+      "version": 1,
+      "content": {
+        "facts": [
+          {
+            "section": "condition",
+            "key": "condition",
+            "value": "Type 2 diabetes",
+            "date": "2026-06-10",
+            "qualifier": "documented"
+          }
+        ],
+        "text": "Synthetic record: condition: Type 2 diabetes. Status: documented."
+      }
+    },
+    {
+      "record_id": "P020-R2",
+      "record_type": "medication",
+      "event_date": "2026-09-01",
+      "recorded_at": "2026-09-01",
+      "version": 1,
+      "content": {
+        "facts": [
+          {
+            "section": "medication",
+            "key": "acetaminophen",
+            "value": "500 mg as needed",
+            "date": "2026-09-01",
+            "qualifier": "last_documented_current_use_unconfirmed"
+          }
+        ],
+        "text": "Synthetic record: acetaminophen: 500 mg as needed. Status: last_documented_current_use_unconfirmed."
+      }
+    },
+    {
+      "record_id": "P020-R3",
+      "record_type": "lab",
+      "event_date": "2026-09-15",
+      "recorded_at": "2026-09-15",
+      "version": 1,
+      "content": {
+        "facts": [
+          {
+            "section": "lab",
+            "key": "glucose",
+            "value": "8.2 mmol/L",
+            "date": "2026-09-15",
+            "qualifier": "documented"
+          }
+        ],
+        "text": "Synthetic record: glucose: 8.2 mmol/L. Status: documented."
+      }
+    },
+    {
+      "record_id": "P020-R4",
+      "record_type": "allergy",
+      "event_date": "2026-09-01",
+      "recorded_at": "2026-09-01",
+      "version": 1,
+      "content": {
+        "facts": [
+          {
+            "section": "allergy",
+            "key": "allergy_status",
+            "value": "no known allergies",
+            "date": "2026-09-01",
+            "qualifier": "documented"
+          }
+        ],
+        "text": "Synthetic record: allergy_status: no known allergies. Status: documented."
+      }
+    }
+  ]
+}

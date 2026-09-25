@@ -1,0 +1,19 @@
+[project]
+name = "clinician-agent-observability"
+version = "0.1.0"
+description = "Local telemetry bootstrap and validation for clinician-agent-api"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "opentelemetry-api==1.45.0",
+    "opentelemetry-exporter-otlp==1.45.0",
+    "opentelemetry-sdk==1.45.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest==8.4.2",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["lib"]
+testpaths = ["tests"]

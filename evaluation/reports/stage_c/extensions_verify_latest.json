@@ -1,0 +1,59 @@
+{
+  "timestamp_utc": "20260925T133637Z",
+  "extensions_pass": 3,
+  "extensions_fail": 0,
+  "results": {
+    "registry": {
+      "proof": "registry_adapter",
+      "pass": true,
+      "server_ids": [
+        "records",
+        "eval_ping"
+      ]
+    },
+    "get_record_counts": {
+      "proof": "get_record_counts",
+      "pass": true,
+      "clinical_allowlist": [
+        "list_records",
+        "read_records"
+      ],
+      "discovered_tools": [
+        "get_record_counts",
+        "list_records",
+        "read_records"
+      ],
+      "counts": {
+        "patient_id": "P001",
+        "counts": {
+          "condition": 1,
+          "medication": 1,
+          "allergy": 1,
+          "lab": 1,
+          "vital": 0,
+          "visit_note": 0
+        }
+      },
+      "error": null
+    },
+    "ping": {
+      "proof": "ping_server",
+      "pass": true,
+      "records_clinical_allowlist": [
+        "list_records",
+        "read_records"
+      ],
+      "ping_allowlist": [
+        "ping"
+      ],
+      "discovered_tools": [
+        "ping"
+      ],
+      "pong": {
+        "status": "ok",
+        "message": "pong"
+      },
+      "error": null
+    }
+  }
+}
