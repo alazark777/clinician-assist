@@ -22,7 +22,7 @@ Runtime outputs (gitignored):
 From `records-mcp/`:
 
 ```bash
-docker compose -f observability/compose.yaml --env-file observability/images.env up -d
+podman compose -f observability/compose.yaml --env-file observability/images.env up -d
 ```
 
 When the hardened MCP **application** container is added in Stage B, attach it to network `clinician-records-observability` and set:

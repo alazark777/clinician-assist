@@ -1,20 +1,20 @@
 # Clinician assistant implementation kit
 
-This package contains component handoff specifications, synthetic fixtures, a static checker/evaluation starter, and source copies of the coding skills installed separately under `~/.cursor/skills`. **It contains no implemented application.** Component source code, container isolation, model integration, and runtime acceptance remain Stage B deliverables. Kit validation is not application or clinical validation.
+This package contains a runnable clinician-assistant MVP: independent web, agent-service, and records-MCP components, synthetic fixtures, evaluation tooling, and source copies of the coding skills installed separately under `~/.cursor/skills`. It is an engineering MVP, not a clinically validated product.
 
 The authoritative current specification is [contracts.md](skills/build-clinician-mvp/references/contracts.md), supported by [sources.md](skills/build-clinician-mvp/references/sources.md). The retained v0.1 draft is historical: **the current MCP-in-MVP override requires a separate MCP records server and container isolation now**, despite v0.1 deferring them.
 
-## Stage A dependency compatibility (verified 2026-09-25)
+## Dependency baseline (verified 2026-09-25)
 
 - PyPI serves non-yanked `mcp==2.2.0` (uploaded 2026-09-07, Python >=3.10). Official v2 documentation lists `2026-07-28` in `MODERN_PROTOCOL_VERSIONS` and as `LATEST_PROTOCOL_VERSION`, and the official v2.0.0 release identifies v2 as stable with support for that revision.
 - The official [MCP Python SDK v2.2.0 release](https://github.com/modelcontextprotocol/python-sdk/releases/tag/v2.2.0) is available and is the release pinned by both backend lockfiles.
-- The backend locks target Python 3.12, as required by the contract. Independent lock checks passed with Python 3.12.12; Stage B must still prove runtime behavior.
-- The frontend lock uses the exact registry versions resolved in `web/package-lock.json`. Runtime/browser compatibility is deferred to Stage B.
-- Container image digests are not justified until the Stage B container definition exists; none are claimed or pinned in Stage A.
+- The backend locks target Python 3.12, as required by the contract. Runtime and component tests have been run with Python 3.12.12.
+- The frontend lock uses the exact registry versions resolved in `web/package-lock.json`; the web package requires Node 24.x.
+- Podman is the supported local container engine. Docker is not required by the normal workflow.
 
 ## Architecture and scope
 
-The three-process path is **React/TypeScript/Vite web (localhost:5173) → FastAPI agent HTTP API/MCP client (localhost:8000) → MCP records server (localhost:8001 `/mcp`)**. Web and API run locally; records run in a hardened Docker/Podman-compatible container. Only records MCP reads patient files, through a read-only patient-directory mount. Never mount the repository, evals, secrets, or agent database into that container.
+The three-process path is **React/TypeScript/Vite web (localhost:5173) → FastAPI agent HTTP API/MCP client (localhost:8000) → MCP records server (localhost:8001 `/mcp`)**. The supported local developer workflow runs all three as independent host processes. Podman runs the local OpenTelemetry Collector and Jaeger; the records container is reserved for isolation verification. Only records MCP reads patient files.
 
 The API owns one bounded runtime clinical coordinator, a scripted offline ModelPort and an OpenAI-compatible adapter configurable for multiple providers, request-scoped patient authorization, and SQLite run/profile/source-snapshot/feedback state under `var/agent/`. Multiple delegated **coding** agents do not imply multiple clinical runtime agents. Reusable backend telemetry sends scrubbed events through a local Collector; SQLite remains authoritative even when telemetry fails.
 
@@ -24,7 +24,7 @@ Generate synthetic outpatient diabetes pre-visit drafts with source-linked facts
 
 Open this repository as the coding workspace and ask the agent to read the installed skill plus this repository's source references. For example:
 
-> Read `~/.cursor/skills/build-clinician-mvp/SKILL.md`, `evaluation/AGENTS.md`, and `skills/build-clinician-mvp/references/`. Begin Stage A of the clinician MVP implementation. Present test evidence for human acceptance before advancing stages.
+> Read `~/.cursor/skills/start-clinician-stack/SKILL.md`, `evaluation/AGENTS.md`, and the component READMEs. Start the local Podman stack, inspect the current implementation, and present test evidence and limitations for human review.
 
 The orchestrator assigns these specialists:
 
@@ -36,27 +36,41 @@ The orchestrator assigns these specialists:
 | `instrument-clinician-mvp` | Shared telemetry and local collection |
 | `verify-clinician-mvp` | Independent evaluation and acceptance evidence |
 
-Read the [web](web/README.md), [agent](agent-service/README.md), and [records](records-mcp/README.md) starters and their developer guides. Each directory is an independent runtime boundary with its own manifest and lock. Run every component command from that component's directory.
+Read the [web](web/README.md), [agent](agent-service/README.md), and [records](records-mcp/README.md) documentation and developer guides. Each directory is an independent runtime boundary with its own manifest and lock. Run every component command from that component's directory.
 
-## Independent local processes
+## Start the local stack
 
-After implementation, run each component in its own terminal from its component directory:
+After a laptop restart, use the single Podman-aware startup script:
 
 ```bash
-# Terminal 1
-cd web
-npm run dev -- --host 127.0.0.1 --port 5173
-
-# Terminal 2
-cd agent-service
-uv run uvicorn clinician_agent.main:app --host 127.0.0.1 --port 8000 --workers 1
-
-# Terminal 3
-cd records-mcp
-docker compose -f compose.yaml up --build
+skills/start-clinician-stack/scripts/clinician-stack.sh start
 ```
 
-The web process talks only to the agent API. The agent process talks to the records MCP endpoint. The records process alone reads its local `data/patients/` directory, and its container receives only that directory as a read-only mount. Use the process-only MCP command in `records-mcp/README.md` only for debugging; it does not establish container isolation.
+It starts the Podman machine, Jaeger/OTel, records MCP, agent API, and Vite;
+it reuses healthy services and writes logs under ignored `var/runtime/`.
+
+For manual three-terminal debugging:
+
+```bash
+# Terminal 1 — records MCP
+cd records-mcp
+OTEL_EXPORTER_OTLP_ENDPOINT=http://127.0.0.1:4318 \
+uv run python -m clinician_records --host 127.0.0.1 --port 8001
+
+# Terminal 2 — agent API
+cd agent-service
+OTEL_EXPORTER_OTLP_ENDPOINT=http://127.0.0.1:4318 \
+uv run uvicorn clinician_agent.main:app --host 127.0.0.1 --port 8000 --workers 1
+
+# Terminal 3 — web
+cd web
+npm run dev -- --host 127.0.0.1 --port 5173
+```
+
+The web process talks only to the agent API. The agent process talks to the
+records MCP endpoint. The records process alone reads `records-mcp/data/patients/`.
+Use the Podman container workflow in `records-mcp/README.md` only when proving
+container isolation.
 
 ## Ownership boundaries
 
@@ -69,22 +83,43 @@ The root contains documentation, source skill material, and evaluation assets, b
 
 The three runtime components intentionally keep local copies of boundary schemas instead of importing a root `shared` package. Compatibility is tested over HTTP and MCP boundaries.
 
-Stage A locks contracts and verifies fixtures/dependencies. Stage B builds three processes with offline stub, browser tests, container isolation, and telemetry. Stage C runs repeated configured real-model evaluations, baseline comparisons, and extension proofs. At every boundary: builder evidence → independent tester → explicit human acceptance. If one agent executes all roles sequentially, label independence unavailable. Report skipped model/runtime/clinician checks as skipped.
+Stage A locked contracts and verified fixtures/dependencies. Stage B implemented
+three processes, browser tests, telemetry, and the MCP isolation target; the
+container isolation check remains skipped when no usable Podman container stack
+is available. Stage C supports repeated configured real-model evaluations,
+baseline comparisons, and extension proofs. Clinician review and clinical
+validation remain pending. Report skipped model/runtime/clinician checks as
+skipped.
 
 ## Review revision (2026-09-25)
 
-Contract v0.3 resolves inventory-based lab/vital selection, atomic exact-ID reads, persisted review state, and active/interrupted run replay. The evaluator now rejects malformed traces, absent injected tool faults, mismatched retries, and empty evaluation files. Schemas and component handoffs match these rules. Patient fixtures and expected clinical answers are unchanged. This is a kit review; runtime implementation and acceptance remain pending.
+Contract v0.3 resolves inventory-based lab/vital selection, atomic exact-ID
+reads, persisted review state, and active/interrupted run replay. The evaluator
+rejects malformed traces, absent injected tool faults, mismatched retries, and
+empty evaluation files. Schemas and component handoffs match these rules.
+Patient fixtures and expected clinical answers are unchanged. The engineering
+MVP is implemented; runtime evidence is separate from clinical acceptance.
 
 ## Runnable kit checks
 
-From the repository root, run exactly:
+From the repository root, run:
 
 ```bash
 python3 evaluation/scripts/validate_kit.py
 python3 -m unittest discover -s evaluation -p 'test_*.py'
 ```
 
-These check the supplied kit and structured fixtures. They do not start the application or establish semantic/clinical correctness. Missing evaluation checker or fixture files are an incomplete package, not a passing check.
+These check the supplied kit and structured fixtures. They do not start the
+application or establish semantic/clinical correctness. Component checks are:
+
+```bash
+(cd agent-service && uv run --group dev pytest tests)
+(cd records-mcp && uv run --group dev pytest tests)
+(cd web && npm run build)
+```
+
+The real browser journey is `cd web && npm run test:e2e:real`; it uses the
+configured agent model when `agent-service/.env` is present.
 
 ## Data and evaluation boundaries
 

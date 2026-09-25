@@ -21,8 +21,7 @@ Runtime outputs (gitignored):
 From `agent-service/`:
 
 ```bash
-docker compose -f observability/compose.yaml --env-file observability/images.env up -d
-# Podman: podman compose -f observability/compose.yaml --env-file observability/images.env up -d
+podman compose -f observability/compose.yaml --env-file observability/images.env up -d
 ```
 
 Validate collector syntax (requires Docker/Podman):

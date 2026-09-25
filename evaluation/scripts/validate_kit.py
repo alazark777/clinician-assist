@@ -43,14 +43,19 @@ def main():
         for key in ("expected_output", "expected_tool_calls", "harness_faults", "case_id", "split"):
             check('"' + key + '"' not in raw, f"golden leakage into {p.name}: {key}")
     skills = sorted((ROOT / "skills").glob("*/SKILL.md"))
-    check(len(skills) == 6, "need six coding skills")
+    coding_skills = [p for p in skills if p.parent.name != "start-clinician-stack"]
+    check(len(coding_skills) == 6, "need six coding skills")
     for p in skills:
         raw = p.read_text()
-        front = re.match(r"---\nname: ([a-z0-9-]+)\ndescription: ([^\n]+)\n---", raw)
+        front = re.match(
+            r"---\nname: ([a-z0-9-]+)\ndescription: ([^\n]+)\n(?:[^\n]*\n)*---",
+            raw,
+        )
         check(bool(front), "invalid skill frontmatter: " + str(p))
         if front:
             check(front.group(1) == p.parent.name, "skill directory/name mismatch")
-        check("contracts.md" in raw and "sources.md" in raw, "missing shared contract references")
+        if p.parent.name != "start-clinician-stack":
+            check("contracts.md" in raw and "sources.md" in raw, "missing shared contract references")
     for component in ("web", "agent-service", "records-mcp"):
         for name in ("README.md", "DEVELOPER_GUIDE.md"):
             check((ROOT / component / name).is_file(), f"missing {component}/{name}")

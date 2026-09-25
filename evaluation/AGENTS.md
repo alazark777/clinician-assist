@@ -35,6 +35,9 @@ python3 scripts/validate_kit.py
 python3 -m unittest discover -s . -p 'test_*.py'
 ```
 
-These commands validate kit structure/fixtures only. Component startup commands in the handoffs are not implemented yet; implement and demonstrate them during the runtime build. Pin exact dependencies once after official-source compatibility checks and record observed evidence.
+These commands validate kit structure and fixtures only. Component startup and
+runtime checks live in the component directories; record their observed
+evidence separately from static evaluator results. Pin exact dependencies
+after official-source compatibility checks and record observed evidence.
 
 At each Stage A/B/C boundary, collect changed paths, command results, pass/fail/skip counts, limitations, and unresolved risks. Require independent tester review, defect resolution, then explicit human acceptance before advancing. Distinguish static, stub, real-model, browser, container, extension, and clinician evidence. Never claim skipped checks passed or prototype acceptance establishes clinical validation.

@@ -1,8 +1,13 @@
-# Clinician web starter
+# Clinician web
 
 **Status:** Stage B React + TypeScript + Vite UI implemented against the agent HTTP contract.
 
-Build React + TypeScript + Vite at localhost:5173. Fetch only the agent HTTP API. Use its authorized patient catalog, generate a draft for the selected patient/context/`as_of`, inspect source excerpts, reload saved profiles, and submit version-bound accept/needs-correction feedback. Display gaps, conflicts, incomplete retrieval, and run ID. Acceptance records demo review; it never changes source records.
+Run React + TypeScript + Vite at localhost:5173. Fetch only the agent HTTP
+API. Use its authorized patient catalog, generate a draft for the selected
+patient/context/`as_of`, inspect source excerpts, reload saved profiles, and
+submit version-bound accept/needs-correction feedback. Display gaps, conflicts,
+incomplete retrieval, and run ID. Acceptance records demo review; it never
+changes source records.
 
 Read [contracts](../skills/build-clinician-mvp/references/contracts.md), [sources](../skills/build-clinician-mvp/references/sources.md), and [DEVELOPER_GUIDE.md](DEVELOPER_GUIDE.md). Own all files under `web/`, including its API client types, browser tests, scripts, and frontend observability. Do not import another component's source or a root shared package.
 
@@ -29,7 +34,20 @@ Set `VITE_AGENT_API_BASE_URL` (default in `.env.example`: `http://127.0.0.1:8000
 
 `test:e2e` starts the Vite dev server and a **contract mock agent** on port 8000 for isolated browser checks.
 
-`test:e2e:real` runs a separate Playwright config (`playwright.real.config.ts`) against the **real** agent and records MCP (offline stub, paired RSA keys, `agent-service/secrets/demo-sessions.json`). It refuses to run if port 8000 is the Node mock. See [e2e/real-pipeline/README.md](e2e/real-pipeline/README.md) for prerequisites and manual stack commands.
+`test:e2e:real` runs a separate Playwright config
+(`playwright.real.config.ts`) against the **real** agent and records MCP. The
+managed stack reads `agent-service/.env`, so it uses the configured backend
+(stub or a real provider); it requires paired RSA keys and
+`agent-service/secrets/demo-sessions.json`. It refuses to run if port 8000 is
+the Node mock. See [e2e/real-pipeline/README.md](e2e/real-pipeline/README.md)
+for prerequisites and manual stack commands.
+
+For the complete local stack, including Podman-managed Jaeger and the
+OpenTelemetry collector, run from the kit root:
+
+```bash
+skills/start-clinician-stack/scripts/clinician-stack.sh start
+```
 
 Test the real browser→API→MCP journey, source rendering, feedback/reload, unauthorized access, empty/incomplete results, cancellation, and escaped hostile text. For connection/CORS failures, check API readiness, loopback origin, and API base URL; for 403, check the demo session's patient access. Share only safe run IDs in diagnostics.
 
